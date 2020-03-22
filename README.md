@@ -38,3 +38,63 @@ $ git push -u origin master
 ```
 
 接下来就能无脑 git push / pull  命令了！
+
+
+
+因为昨日安装nacos失败，貌似是因为不支持MySQL5.5的原因，搞了一天半，终于安装上MySQL8，如下：
+
+下载解压8的包，在bin的**同级**目录，创建my.ini文件：
+
+```ini
+[mysqld]
+# These are commonly set, remove the # and set as required.
+basedir=D:\MySQL\mysql-8.0.19-winx64
+datadir=D:\MySQL\mysql-8.0.19-winx64\data
+port=3307
+server_id=2
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES 
+default-authentication-plugin=mysql_native_password
+```
+
+管理员打开cmd，cd到解压目录，输入： 进行初始化
+
+```
+mysqld --defaults-file=D:\MySQL\mysql-8.0.19-winx64\my.ini --initialize --console
+```
+
+留意root@localhost后的字符串，复制保存该默认密码
+
+再执行以下命令，安装MySQL8：
+
+```
+mysqld install MySQL8 --defaults-file=D:\MySQL\mysql-8.0.19-winx64\my.ini
+```
+
+打开MySQL8注册表，修改imagePath值：
+
+```
+"D:\MySQL\mysql-8.0.19-winx64\bin\mysqld" --defaults-file=D:\MySQL\mysql-8.0.19-winx64\my.ini MySQL8
+```
+
+cmd中启动MySQL8服务：
+
+```
+net start MySQL8
+```
+
+然后输入刚才记下的随机密码登录：
+
+```
+mysql -uroot -p -P3307
+```
+
+登录后重新设置密码： 
+
+```sql
+ALTER USER 'root'@'localhost'IDENTIFIED BY '新的密码';
+```
+
+MySQL8至此安装完毕，测试连接通过。
+
+
+
